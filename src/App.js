@@ -9,7 +9,7 @@ import Hammer from 'hammerjs';
 import CornerstoneViewport from 'react-cornerstone-viewport';
 
 export default function App() {
-  state = {
+  let state = {
     tools: [
       // Mouse
       {
@@ -44,8 +44,8 @@ export default function App() {
     <div>
       <h1>Hello Sample using cornerstonejs</h1>
       <CornerstoneViewport
-        tools={this.state.tools}
-        imageIds={this.state.imageIds}
+        tools={state.tools}
+        imageIds={state.imageIds}
         style={{ minWidth: '100%', height: '512px', flex: '1' }}
       />
     </div>
