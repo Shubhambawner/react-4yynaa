@@ -1,11 +1,5 @@
 import React from 'react';
 import './style.css';
-import dicomParser from 'dicom-parser';
-import cornerstone from 'cornerstone-core';
-import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
-import cornerstoneMath from 'cornerstone-math';
-import cornerstoneTools from 'cornerstone-tools';
-import Hammer from 'hammerjs';
 import CornerstoneViewport from 'react-cornerstone-viewport';
 
 export default function App() {
