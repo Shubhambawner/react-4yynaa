@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './style.css';
 import CornerstoneViewport from 'react-cornerstone-viewport';
 import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
@@ -13,8 +13,6 @@ export default function App() {
   ])
 
   let [viewport, setViewport] = useState({})
-  let [playing, setPlaying] = useState(false)
-  let [Triger, setTriger] = useState(false)
   let state = {
     tools: [
       // Mouse
@@ -41,7 +39,7 @@ export default function App() {
       { name: 'StackScrollMultiTouch', mode: 'active' },
     ],
     imageIds
-    // : [imageIds[0] +  '?frame=' + frame]
+      // : [imageIds[0] + '?frame=' + frame]
   };
 
   console.log(state.imageIds);
@@ -56,20 +54,52 @@ export default function App() {
     // this UI is only built for a single file so just dump the first one
     let file = files[0];
     console.log(file);
-    const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+    const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file)
     setImageIds([imageId])
+
+
   }
+
+  let imageId = state.imageIds[0]
+  const seriesMetadata =
+    cornerstone.metaData.get('generalSeriesModule', imageId) || {};
+  console.log(seriesMetadata, 'seriesMetadata ');
+  const imagePlaneModule =
+    cornerstone.metaData.get('imagePlaneModule', imageId) || {};
+  console.log(imagePlaneModule, 'imagePlaneModule');
+  const generalStudyModule =
+    cornerstone.metaData.get('generalStudyModule', imageId) || {};
+  console.log(generalStudyModule, 'generalStudyModule');
+  const patientModule =
+    cornerstone.metaData.get('patientModule', imageId) || {};
+  console.log(patientModule, 'patientModule ');
+  const generalImageModule =
+    cornerstone.metaData.get('generalImageModule', imageId) || {};
+  console.log(generalImageModule, 'generalImageModule');
+  const cineModule = cornerstone.metaData.get('cineModule', imageId) || {};
+  console.log(cineModule, 'cineModule');
+
+  let numFrames = cornerstone.metaData.get('cineModule', imageId)?.numFrames || 1
+
+  let imageIdsNew = []
+  for (let index = 0; index < numFrames; index++) {
+    imageIdsNew.push(imageId + '?frame=' + index)
+  }
+  console.log(imageIdsNew)
+
+
+
+  window.cornerstone = cornerstone
 
   return (
     <div>
       <h1>Hello Sample using cornerstonejs</h1>
       <input type={'file'} multiple placeholder='drop files' onChange={handleFileSelect}></input>
-      <button onClick={() => { setPlaying(!playing) }}>play/pause</button>
       <CornerstoneViewport
         tools={state.tools}
-        imageIds={state.imageIds}
+        imageIds={imageIdsNew}
         style={{ minWidth: '100%', height: '512px', flex: '1' }}
-        isPlaying={playing}
+        // isPlaying={true}
         // frameRate={10}
         onElementEnabled={elementEnabledEvt => {
           const cornerstoneElement = elementEnabledEvt.detail.element;
