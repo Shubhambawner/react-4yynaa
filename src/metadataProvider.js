@@ -3,6 +3,7 @@ import dicomParser from 'dicom-parser';
 
 const { getNumberValue, getValue } = cornerstoneWADOImageLoader.wadors.metaData;
 
+let g = 9
 
 function wadoUriCustomMetaDataProvider(type, imageId) {
   const {
@@ -12,8 +13,14 @@ function wadoUriCustomMetaDataProvider(type, imageId) {
   const parsedImageId = parseImageId(imageId);
   const dataSet = dataSetCacheManager.get(parsedImageId.url);
 
+
+
   if (!dataSet) {
+  //  console.log('dataset could not be loded!!!', imageId, parseImageId, dataSetCacheManager)
     return;
+  }else{
+  //  if(g--)console.log('dataset  loded!!!', imageId, parseImageId, dataSetCacheManager)
+
   }
 
   if (type === 'generalImageModule') {
@@ -44,7 +51,7 @@ function wadoUriCustomMetaDataProvider(type, imageId) {
   if (type === 'cineModule') {
     return {
       frameTime: dataSet.floatString('x00181063'),
-      numFrames : dataSet.intString('x00280008')
+      numFrames: dataSet.intString('x00280008')
     };
   }
 
@@ -57,4 +64,4 @@ function wadoUriCustomMetaDataProvider(type, imageId) {
     return dicomParser.explicitElementToString(dataSet, element);
   }
 }
- export default wadoUriCustomMetaDataProvider
+export default wadoUriCustomMetaDataProvider
